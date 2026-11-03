@@ -1,0 +1,467 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0B2E5C">
+<title>InvesteFácil</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Figtree:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: moldura de celular centralizada; em telas largas, painel de apresentação ao lado. */
+:root{
+  --bg:#EEF3F9; --surface:#FFFFFF; --ink:#0A2540; --muted:#5A6B82; --line:#E1E8F1;
+  --navy:#0B2E5C; --navy-2:#154A8A; --green:#0E9F68; --green-soft:#DDF5EA; --green-ink:#0A6B47;
+  --red:#C93B3B; --red-soft:#FBE4E4; --amber:#B7791F; --amber-soft:#FFF1D6;
+  --hero-a:#0B2E5C; --hero-b:#154A8A; --on-hero:#FFFFFF; --on-hero-muted:#B8CBE6;
+  --c1:#1F5FBF; --c2:#12A36B; --c3:#E0A100; --c4:#1AA7B8; --c5:#E5733A; --c6:#6B7C93;
+  --shadow:0 1px 2px rgba(10,37,64,.06),0 6px 20px rgba(10,37,64,.06);
+  --display:'Sora',system-ui,sans-serif; --body:'Figtree',system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#07101F; --surface:#0F1D33; --ink:#E8EEF7; --muted:#93A3BA; --line:#1E3052;
+  --navy:#4C8DE0; --navy-2:#6AA3EE; --green:#2BD08F; --green-soft:#0F3A2C; --green-ink:#5BE3AD;
+  --red:#F07878; --red-soft:#3A1A1F; --amber:#F0B445; --amber-soft:#3A2D12;
+  --hero-a:#123E78; --hero-b:#0B2547; --shadow:0 1px 2px rgba(0,0,0,.4),0 6px 20px rgba(0,0,0,.3);
+  --c1:#5B9BF0; --c2:#2BD08F; --c3:#F0B445; --c4:#3CC4D4; --c5:#F08A5A; --c6:#8EA0B8; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#07101F; --surface:#0F1D33; --ink:#E8EEF7; --muted:#93A3BA; --line:#1E3052;
+  --navy:#4C8DE0; --navy-2:#6AA3EE; --green:#2BD08F; --green-soft:#0F3A2C; --green-ink:#5BE3AD;
+  --red:#F07878; --red-soft:#3A1A1F; --amber:#F0B445; --amber-soft:#3A2D12;
+  --hero-a:#123E78; --hero-b:#0B2547; --shadow:0 1px 2px rgba(0,0,0,.4),0 6px 20px rgba(0,0,0,.3);
+  --c1:#5B9BF0; --c2:#2BD08F; --c3:#F0B445; --c4:#3CC4D4; --c5:#F08A5A; --c6:#8EA0B8; color-scheme:dark}
+[hidden]{display:none!important}
+*{box-sizing:border-box}
+html{box-sizing:border-box;height:100%}
+body{height:100%;margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.45;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0}
+@media (max-width:899px){body{padding-left:max(0px,env(safe-area-inset-left,0px));padding-right:max(0px,env(safe-area-inset-right,0px))}}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--navy-2);outline-offset:2px}
+h1,h2,h3{font-family:var(--display);margin:0;text-wrap:balance;letter-spacing:-.01em}
+.num{font-variant-numeric:tabular-nums}
+.stage{height:100%;display:grid;grid-template-columns:minmax(0,1fr);justify-content:center;align-items:center;gap:56px;max-width:1100px;margin:0 auto}
+@media (min-width:900px){.stage{grid-template-columns:minmax(0,1fr) 410px;padding-block:20px}}
+.side{display:none}
+@media (min-width:900px){.side{display:flex;flex-direction:column;gap:22px}}
+.side h1{font-size:34px;line-height:1.15;max-width:15ch}
+.side .slogan{color:var(--green-ink);font-weight:600;font-size:17px;margin:0}
+.side p{margin:0;color:var(--muted);max-width:46ch}
+.side h3{font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:6px}
+.pillars{display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:460px}
+.pillar{display:flex;gap:10px;align-items:flex-start;padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--surface);text-align:left;width:100%}
+.pillar b{display:block;font-size:14px}.pillar span{font-size:12.5px;color:var(--muted)}
+.pillar svg{flex:none;color:var(--green)}
+.demo-note{font-size:12.5px;border-left:3px solid var(--green);padding-left:10px}
+.phone{position:relative;height:100%;max-height:100%;width:100%;max-width:440px;margin:0 auto;background:var(--bg);overflow:hidden;display:flex;flex-direction:column}
+@media (min-width:900px){.phone{height:min(840px,100%);border-radius:36px;border:1px solid var(--line);box-shadow:0 30px 70px rgba(10,37,64,.22)}}
+.screen{flex:1;overflow-y:auto;overflow-x:hidden;padding:16px 16px 96px;display:flex;flex-direction:column;gap:14px;scrollbar-width:thin}
+.screen>*{flex-shrink:0}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.brand{display:flex;align-items:center;gap:9px;font-family:var(--display);font-weight:700;font-size:18px}
+.brand small{display:block;font-family:var(--body);font-weight:500;font-size:11px;color:var(--muted);letter-spacing:0}
+.icon-btn{width:40px;height:40px;border-radius:12px;border:1px solid var(--line);background:var(--surface);display:grid;place-items:center}
+svg.i{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.hello h2{font-size:22px}.hello p{margin:2px 0 0;color:var(--muted);font-size:14px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:var(--shadow);min-width:0}
+.card h3{font-size:15px;display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:12px}
+.card h3 a,.link{font-family:var(--body);font-size:13px;font-weight:600;color:var(--navy);background:none;border:0;padding:0}
+.hero{background:linear-gradient(145deg,var(--hero-a),var(--hero-b));color:var(--on-hero);border-radius:22px;padding:18px;display:flex;flex-direction:column;gap:14px;box-shadow:var(--shadow)}
+.hero .lbl{font-size:13px;color:var(--on-hero-muted)}
+.hero .bal{font-family:var(--display);font-size:32px;font-weight:700;letter-spacing:-.02em}
+.hero .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.chip{background:rgba(255,255,255,.12);border-radius:14px;padding:10px 12px;display:flex;gap:9px;align-items:center;min-width:0}
+.chip .dot{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;flex:none}
+.chip .dot.in{background:rgba(52,211,153,.25);color:#6EE7B7}.chip .dot.out{background:rgba(252,165,165,.22);color:#FCA5A5}
+.chip small{display:block;font-size:11.5px;color:var(--on-hero-muted)}.chip b{font-size:14.5px}
+.quick{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.quick button{display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 4px;border:1px solid var(--line);background:var(--surface);border-radius:14px;font-size:12px;font-weight:600}
+.quick button svg{color:var(--navy)}
+.donut-wrap{display:grid;grid-template-columns:132px minmax(0,1fr);gap:14px;align-items:center}
+.donut{position:relative;width:132px;height:132px}
+.donut svg{width:100%;height:100%;transform:rotate(-90deg)}
+.donut .mid{position:absolute;inset:0;display:grid;place-content:center;text-align:center;font-size:11px;color:var(--muted)}
+.donut .mid b{font-family:var(--display);font-size:15px;color:var(--ink)}
+.legend{display:flex;flex-direction:column;gap:6px;font-size:13px}
+.legend div{display:flex;align-items:center;gap:8px;min-width:0}
+.legend i{width:10px;height:10px;border-radius:3px;flex:none}
+.legend span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.legend b{font-weight:600}
+.bar{height:10px;border-radius:99px;background:var(--line);overflow:hidden}
+.bar>i{display:block;height:100%;border-radius:99px;background:var(--green);transition:width .5s ease}
+.pct{font-family:var(--display);font-weight:700}
+.meta{display:flex;justify-content:space-between;gap:8px;font-size:13px;color:var(--muted);margin-top:8px;flex-wrap:wrap}
+.tabbar{position:absolute;left:0;right:0;bottom:0;display:grid;grid-template-columns:repeat(5,1fr);background:var(--surface);border-top:1px solid var(--line);padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px))}
+.tabbar button{border:0;background:none;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 2px;font-size:11px;font-weight:600;color:var(--muted);border-radius:12px}
+.tabbar button[aria-current="page"]{color:var(--navy)}
+.tabbar button[aria-current="page"] .pill{background:var(--green-soft);color:var(--green-ink)}
+.pill{width:46px;height:28px;border-radius:99px;display:grid;place-items:center}
+.btn{border:0;border-radius:14px;padding:13px 16px;font-weight:700;background:var(--navy);color:#fff;display:inline-flex;gap:8px;align-items:center;justify-content:center}
+:root[data-theme="dark"] .btn{color:#06101F}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .btn{color:#06101F}}
+.btn.green{background:var(--green);color:#fff}
+:root[data-theme="dark"] .btn.green{color:#04140E}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .btn.green{color:#04140E}}
+.btn.ghost{background:transparent;border:1px solid var(--line);color:var(--ink)}
+.btn.block{width:100%}
+.seg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;background:var(--line);border-radius:12px;padding:3px;gap:3px}
+.seg button{border:0;background:transparent;border-radius:9px;padding:8px 6px;font-size:13px;font-weight:600;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:var(--shadow)}
+.tx{display:flex;align-items:center;gap:12px;padding:11px 0;border-top:1px solid var(--line)}
+.tx:first-child{border-top:0}
+.tx .ic{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;flex:none}
+.tx .t{flex:1;min-width:0}.tx .t b{display:block;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tx .t small{color:var(--muted);font-size:12px}
+.tx .v{font-weight:700;font-size:14px;text-align:right}
+.v.in{color:var(--green-ink)}.v.out{color:var(--red)}
+.tx .del{border:0;background:none;color:var(--muted);padding:6px;border-radius:8px}
+.catrow{display:grid;grid-template-columns:90px minmax(0,1fr) 72px;gap:10px;align-items:center;font-size:13px;padding:5px 0}
+.catrow .bar{height:8px}.catrow b{text-align:right;font-weight:600}
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:12px;min-width:0}
+.field label{font-size:13px;font-weight:600;color:var(--muted)}
+.field input,.field select{width:100%;border:1px solid var(--line);background:var(--bg);border-radius:12px;padding:12px;min-width:0}
+.field input[type=range]{padding:0;accent-color:var(--green);background:none;border:0}
+.err{color:var(--red);font-size:12.5px;min-height:0;margin:-4px 0 8px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.goal .top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:12px}
+.goal h3{margin:0}.goal .tag{font-size:12px;color:var(--muted)}
+.goal .acts{display:flex;gap:8px;margin-top:12px}.goal .acts .btn{flex:1;padding:10px}
+.done{background:var(--green-soft);color:var(--green-ink);font-size:12px;font-weight:700;padding:3px 9px;border-radius:99px}
+.lesson{padding:0;overflow:hidden}
+.lesson>button{width:100%;text-align:left;border:0;background:none;padding:16px;display:flex;gap:12px;align-items:flex-start}
+.lesson .ic{width:40px;height:40px;border-radius:12px;background:var(--green-soft);color:var(--green-ink);display:grid;place-items:center;flex:none}
+.lesson h3{font-size:15px;margin-bottom:3px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.lesson p{margin:0;color:var(--muted);font-size:13.5px}
+.lesson .more{padding:0 16px 16px 68px;font-size:14px;display:none}
+.lesson.open .more{display:block}.lesson.open .chev{transform:rotate(180deg)}
+.lesson .more ul{margin:8px 0;padding-left:18px}.lesson .more li{margin:3px 0}
+.chev{margin-left:auto;color:var(--muted);transition:transform .2s}
+.days{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.days button{aspect-ratio:1;border-radius:10px;border:1px solid var(--line);background:var(--bg);font-weight:700;font-size:13px;color:var(--muted)}
+.days button[aria-pressed="true"]{background:var(--green);border-color:var(--green);color:#fff}
+.notice{display:flex;gap:10px;background:var(--amber-soft);color:var(--ink);border-radius:14px;padding:12px;font-size:13px;border:1px solid var(--line)}
+.notice svg{color:var(--amber)}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stat{background:var(--bg);border-radius:12px;padding:10px 12px}.stat small{color:var(--muted);font-size:12px;display:block}.stat b{font-family:var(--display);font-size:15px}
+.chart{width:100%;height:auto;display:block}
+.chart text{fill:var(--muted);font-size:10px;font-family:var(--body)}
+.chart .grid{stroke:var(--line);stroke-width:1}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+.opts button{border:1px solid var(--line);background:var(--bg);border-radius:99px;padding:7px 12px;font-size:13px;font-weight:600;display:flex;gap:7px;align-items:center}
+.opts button[aria-pressed="true"]{border-color:var(--navy);background:var(--surface);box-shadow:inset 0 0 0 1px var(--navy)}
+.opts i{width:10px;height:10px;border-radius:50%}
+.tbl{width:100%;border-collapse:collapse;font-size:13px}
+.tbl td,.tbl th{padding:8px 0;border-top:1px solid var(--line);text-align:right}
+.tbl th{font-weight:600;color:var(--muted);font-size:12px;border-top:0}
+.tbl td:first-child,.tbl th:first-child{text-align:left}
+.tbl tr.sel td{font-weight:700}
+.scroll-x{overflow-x:auto}
+.sheet-wrap{position:absolute;inset:0;z-index:20;display:flex;align-items:flex-end}
+.scrim{position:absolute;inset:0;background:rgba(5,12,24,.55);animation:fade .2s}
+.sheet{position:relative;width:100%;max-height:92%;overflow-y:auto;background:var(--surface);border-radius:24px 24px 0 0;padding:18px 16px calc(20px + env(safe-area-inset-bottom,0px));animation:up .25s ease}
+.sheet h3{font-size:18px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center}
+.menu-item{width:100%;display:flex;gap:12px;align-items:center;padding:14px 4px;border:0;border-top:1px solid var(--line);background:none;text-align:left;font-weight:600}
+.toast{position:absolute;left:16px;right:16px;bottom:88px;z-index:30;background:var(--ink);color:var(--bg);border-radius:14px;padding:12px 14px;font-weight:600;font-size:14px;display:flex;gap:10px;align-items:center;animation:up .25s ease;box-shadow:var(--shadow)}
+.toast svg{color:var(--green)}
+.empty{text-align:center;color:var(--muted);padding:18px 8px;font-size:14px}
+@keyframes up{from{transform:translateY(16px);opacity:0}to{transform:none;opacity:1}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+<div class="stage">
+  <aside class="side" aria-label="Sobre o projeto">
+    <div class="brand" id="side-logo"></div>
+    <h1>Entenda seu dinheiro. Construa seu futuro.</h1>
+    <p class="slogan">Educação financeira simples, no celular.</p>
+    <div><h3>O problema</h3><p>Muita gente tem dificuldade para controlar gastos, economizar e entender investimentos porque falta conhecimento financeiro acessível.</p></div>
+    <div><h3>A solução</h3><p>Um aplicativo para registrar receitas e despesas, definir metas, aprender conceitos em linguagem simples e simular investimentos sem usar dinheiro real.</p></div>
+    <div class="pillars" id="pillars"></div>
+    <p class="demo-note">Protótipo demonstrativo do projeto escolar do Colégio Novo Milênio. Todos os dados são fictícios e o aplicativo não movimenta dinheiro real.</p>
+  </aside>
+  <main class="phone" id="phone">
+    <div class="screen" id="view" tabindex="-1"></div>
+    <nav class="tabbar" id="tabbar" aria-label="Navegação principal"></nav>
+    <div id="overlay"></div>
+  </main>
+</div>
+<script>
+(function(){
+'use strict';
+var ICONS={
+ home:'<path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>',
+ wallet:'<path d="M3 7a2 2 0 0 1 2-2h13v4"/><path d="M3 7v11a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-9a1 1 0 0 0-1-1H5a2 2 0 0 1-2-2z"/><path d="M17 14h.01"/>',
+ target:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/>',
+ book:'<path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v17H6.5A2.5 2.5 0 0 0 4 21.5z"/><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>',
+ chart:'<path d="M3 3v18h18"/><path d="M7 15l4-5 3 3 5-7"/>',
+ plus:'<path d="M12 5v14M5 12h14"/>',
+ trash:'<path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/>',
+ check:'<path d="M5 12l5 5 9-10"/>',
+ chev:'<path d="M6 9l6 6 6-6"/>',
+ menu:'<path d="M4 7h16M4 12h16M4 17h16"/>',
+ x:'<path d="M6 6l12 12M18 6L6 18"/>',
+ up:'<path d="M7 17L17 7M9 7h8v8"/>',
+ down:'<path d="M17 7L7 17M15 17H7V9"/>',
+ info:'<circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/>',
+ reset:'<path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/>',
+ moon:'<path d="M21 13A9 9 0 1 1 11 3a7 7 0 0 0 10 10z"/>',
+ coins:'<circle cx="9" cy="9" r="6"/><path d="M15.5 6.3A6 6 0 1 1 9 20"/>',
+ flame:'<path d="M12 3c1 4 5 5 5 10a5 5 0 0 1-10 0c0-2 1-3 2-4 0 2 1 3 2 3 0-3-1-5 1-9z"/>'
+};
+function ic(n,c){return '<svg class="i '+(c||'')+'" viewBox="0 0 24 24" aria-hidden="true">'+ICONS[n]+'</svg>';}
+function logo(sz){sz=sz||38;return '<svg width="'+sz+'" height="'+sz+'" viewBox="0 0 48 48" role="img" aria-label="Logotipo InvesteFácil"><defs><linearGradient id="lg'+sz+'" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#154A8A"/><stop offset="1" stop-color="#0B2E5C"/></linearGradient></defs><circle cx="24" cy="24" r="22" fill="url(#lg'+sz+')"/><circle cx="24" cy="24" r="17" fill="none" stroke="#FFFFFF" stroke-opacity=".28" stroke-width="1.5"/><path d="M13 31l8-8 5 5 9-11" fill="none" stroke="#2BD08F" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M28 17h8v8" fill="none" stroke="#2BD08F" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';}
+
+var CATS={'Moradia':'var(--c1)','Alimentação':'var(--c2)','Transporte':'var(--c3)','Lazer':'var(--c5)','Educação':'var(--c4)','Saúde':'var(--c6)'};
+var INCATS=['Mesada / Salário','Trabalho extra','Presente'];
+var KEY='investefacil-proto-v1';
+function seed(){return{
+ name:'Camila',
+ tx:[
+  {id:1,type:'in',desc:'Salário do estágio',val:2400,cat:'Mesada / Salário',date:'2026-11-01'},
+  {id:2,type:'in',desc:'Aulas de reforço',val:450,cat:'Trabalho extra',date:'2026-11-02'},
+  {id:3,type:'out',desc:'Contribuição de moradia',val:720,cat:'Moradia',date:'2026-11-01'},
+  {id:4,type:'out',desc:'Supermercado',val:410,cat:'Alimentação',date:'2026-11-02'},
+  {id:5,type:'out',desc:'Passe de ônibus',val:160,cat:'Transporte',date:'2026-11-02'},
+  {id:6,type:'out',desc:'Cinema e lanche',val:95,cat:'Lazer',date:'2026-11-02'},
+  {id:7,type:'out',desc:'Curso de inglês',val:230,cat:'Educação',date:'2026-11-01'},
+  {id:8,type:'out',desc:'Farmácia',val:60,cat:'Saúde',date:'2026-11-02'}
+ ],
+ goals:[
+  {id:1,name:'Viagem de formatura',target:3000,saved:1150},
+  {id:2,name:'Reserva de emergência',target:1500,saved:300}
+ ],
+ days:[1,1,0,1,0,0,0],
+ read:[],
+ sim:{ini:1000,aporte:150,meses:24,sel:'tesouro',inf:false},
+ nid:100
+};}
+var S;
+try{var raw=localStorage.getItem(KEY);S=raw?JSON.parse(raw):seed();}catch(e){S=seed();}
+if(!S||!S.tx){S=seed();}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+function brl(v){return v.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});}
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function parseMoney(s){var t=String(s).trim().toLowerCase().replace(/r\$|\s/g,'');var mult=1;if(/(mil|k)$/.test(t)){mult=1000;t=t.replace(/(mil|k)$/,'');}
+  if(t.indexOf(',')>-1)t=t.replace(/\./g,'').replace(',','.');else if(/^\d{1,3}(\.\d{3})+$/.test(t))t=t.replace(/\./g,'');
+  var n=parseFloat(t)*mult;return isFinite(n)?n:NaN;}
+function totals(){var i=0,o=0,by={};S.tx.forEach(function(t){if(t.type==='in')i+=t.val;else{o+=t.val;by[t.cat]=(by[t.cat]||0)+t.val;}});return{i:i,o:o,bal:i-o,by:by};}
+function fdate(d){var p=d.split('-');return p[2]+'/'+p[1];}
+
+/* ---------- gráficos ---------- */
+function donut(by,total){
+  var cats=Object.keys(CATS).filter(function(c){return by[c]>0;}),cum=0,segs='';
+  cats.forEach(function(c){var p=by[c]/total*100;segs+='<circle r="15.9155" cx="21" cy="21" fill="none" stroke="'+CATS[c]+'" stroke-width="6" stroke-dasharray="'+p.toFixed(2)+' '+(100-p).toFixed(2)+'" stroke-dashoffset="'+(-cum).toFixed(2)+'"/>';cum+=p;});
+  if(!cats.length)segs='<circle r="15.9155" cx="21" cy="21" fill="none" stroke="var(--line)" stroke-width="6"/>';
+  return '<div class="donut"><svg viewBox="0 0 42 42" role="img" aria-label="Distribuição dos gastos por categoria">'+segs+'</svg><div class="mid"><span>Gastos</span><b class="num">'+brl(total)+'</b></div></div>';
+}
+function legend(by,total){
+  return '<div class="legend">'+Object.keys(CATS).filter(function(c){return by[c]>0;}).sort(function(a,b){return by[b]-by[a];}).map(function(c){return '<div><i style="background:'+CATS[c]+'"></i><span>'+c+'</span><b class="num">'+Math.round(by[c]/total*100)+'%</b></div>';}).join('')+'</div>';
+}
+
+/* ---------- navegação ---------- */
+var TABS=[['painel','Início','home'],['controle','Gastos','wallet'],['metas','Metas','target'],['aprender','Aprender','book'],['simulador','Simular','chart']];
+var cur='painel';
+function go(id,push){
+  if(!TABS.some(function(t){return t[0]===id;}))id='painel';
+  cur=id;if(push!==false){try{history.replaceState(null,'','#'+id);}catch(e){}}
+  render();var v=document.getElementById('view');v.scrollTop=0;
+}
+function tabbar(){
+  document.getElementById('tabbar').innerHTML=TABS.map(function(t){return '<button data-go="'+t[0]+'"'+(t[0]===cur?' aria-current="page"':'')+'><span class="pill">'+ic(t[2])+'</span>'+t[1]+'</button>';}).join('');
+}
+function render(){
+  tabbar();
+  var v=document.getElementById('view');
+  v.innerHTML=({painel:vPainel,controle:vControle,metas:vMetas,aprender:vAprender,simulador:vSimulador})[cur]();
+  if(cur==='simulador')drawSim();
+}
+function topbar(){return '<div class="topbar"><div class="brand">'+logo(38)+'<div>InvesteFácil<small>Entenda seu dinheiro.</small></div></div><button class="icon-btn" data-act="menu" aria-label="Abrir menu">'+ic('menu')+'</button></div>';}
+function head(t,sub){return '<div class="topbar"><div class="hello"><h2>'+t+'</h2><p>'+sub+'</p></div><button class="icon-btn" data-act="menu" aria-label="Abrir menu">'+ic('menu')+'</button></div>';}
+
+/* ---------- Tela 1: Painel ---------- */
+function vPainel(){
+  var T=totals(),h=new Date().getHours(),g=h<12?'Bom dia':h<18?'Boa tarde':'Boa noite';
+  var goal=S.goals[0],gp=goal?Math.min(100,Math.round(goal.saved/goal.target*100)):0;
+  return topbar()+
+  '<div class="hello"><h2>Olá, investidor</h2><p>Veja como está o seu mês de novembro.</p></div>'+
+  '<section class="hero"><div><div class="lbl">Saldo disponível (fictício)</div><div class="bal num">'+brl(T.bal)+'</div></div>'+
+  '<div class="row"><div class="chip"><span class="dot in">'+ic('down')+'</span><div><small>Receitas</small><b class="num">'+brl(T.i)+'</b></div></div>'+
+  '<div class="chip"><span class="dot out">'+ic('up')+'</span><div><small>Despesas</small><b class="num">'+brl(T.o)+'</b></div></div></div></section>'+
+  '<div class="quick"><button data-act="newtx">'+ic('plus')+'Lançar</button><button data-go="metas">'+ic('target')+'Metas</button><button data-go="aprender">'+ic('book')+'Aprender</button><button data-go="simulador">'+ic('chart')+'Simular</button></div>'+
+  '<section class="card"><h3>Para onde vai seu dinheiro<button class="link" data-go="controle">Ver tudo</button></h3>'+
+  (T.o>0?'<div class="donut-wrap">'+donut(T.by,T.o)+legend(T.by,T.o)+'</div>':'<div class="empty">Nenhuma despesa ainda. Toque em Lançar para começar.</div>')+'</section>'+
+  (goal?'<section class="card goal"><h3>Meta em andamento<button class="link" data-go="metas">Ver metas</button></h3><div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px"><b>'+esc(goal.name)+'</b><span class="pct num">'+gp+'%</span></div><div class="bar" role="progressbar" aria-valuenow="'+gp+'" aria-valuemin="0" aria-valuemax="100"><i style="width:'+gp+'%"></i></div><div class="meta"><span class="num">'+brl(goal.saved)+' guardados</span><span class="num">faltam '+brl(Math.max(0,goal.target-goal.saved))+'</span></div></section>':'')+
+  '<section class="card"><h3>Dica do dia</h3><p style="margin:0;color:var(--muted)">Separe uma parte da receita para a meta assim que ela chegar. Guardar primeiro e gastar depois evita que o dinheiro acabe antes do fim do mês.</p></section>';
+}
+
+/* ---------- Tela 2: Controle financeiro ---------- */
+var filt='all';
+function vControle(){
+  var T=totals(),list=S.tx.slice().sort(function(a,b){return b.date.localeCompare(a.date)||b.id-a.id;}).filter(function(t){return filt==='all'||t.type===filt;});
+  var maxv=Math.max.apply(null,Object.keys(CATS).map(function(c){return T.by[c]||0;}).concat([1]));
+  return head('Controle financeiro','Receitas e despesas de novembro')+
+  '<div class="stats"><div class="stat"><small>Receitas</small><b class="num" style="color:var(--green-ink)">'+brl(T.i)+'</b></div><div class="stat"><small>Despesas</small><b class="num" style="color:var(--red)">'+brl(T.o)+'</b></div></div>'+
+  '<section class="card"><h3>Gastos por categoria</h3>'+(T.o>0?'<div class="donut-wrap" style="margin-bottom:12px">'+donut(T.by,T.o)+legend(T.by,T.o)+'</div>':'')+
+  Object.keys(CATS).map(function(c){var v=T.by[c]||0;return '<div class="catrow"><span>'+c+'</span><div class="bar"><i style="width:'+(v/maxv*100)+'%;background:'+CATS[c]+'"></i></div><b class="num">'+brl(v)+'</b></div>';}).join('')+'</section>'+
+  '<button class="btn green block" data-act="newtx">'+ic('plus')+'Novo lançamento</button>'+
+  '<div class="seg" role="group" aria-label="Filtrar lançamentos">'+[['all','Todos'],['in','Receitas'],['out','Despesas']].map(function(f){return '<button data-filt="'+f[0]+'" aria-pressed="'+(filt===f[0])+'">'+f[1]+'</button>';}).join('')+'</div>'+
+  '<section class="card" style="padding:6px 16px">'+(list.length?list.map(function(t){var col=t.type==='in'?'var(--green)':(CATS[t.cat]||'var(--c6)');return '<div class="tx"><span class="ic" style="background:color-mix(in srgb,'+col+' 18%,transparent);color:'+col+'">'+ic(t.type==='in'?'down':'up')+'</span><div class="t"><b>'+esc(t.desc)+'</b><small>'+esc(t.cat)+' · '+fdate(t.date)+'</small></div><div class="v num '+t.type+'">'+(t.type==='in'?'+':'−')+brl(t.val)+'</div><button class="del" data-del="'+t.id+'" aria-label="Excluir lançamento">'+ic('trash')+'</button></div>';}).join(''):'<div class="empty">Nada por aqui neste filtro.</div>')+'</section>';
+}
+function txSheet(){
+  return '<h3>Novo lançamento<button class="icon-btn" data-act="close" aria-label="Fechar">'+ic('x')+'</button></h3>'+
+  '<div id="txform"><div class="seg" id="txtype" style="margin-bottom:14px"><button type="button" data-t="out" aria-pressed="true">Despesa</button><button type="button" data-t="in" aria-pressed="false">Receita</button></div>'+
+  '<div class="field"><label for="tx-desc">Descrição</label><input id="tx-desc" maxlength="40" placeholder="Ex.: Lanche com amigos" autocomplete="off"></div>'+
+  '<div class="grid2"><div class="field"><label for="tx-val">Valor (R$)</label><input id="tx-val" inputmode="decimal" placeholder="0,00" autocomplete="off"></div>'+
+  '<div class="field"><label for="tx-cat">Categoria</label><select id="tx-cat"></select></div></div>'+
+  '<div class="err" id="tx-err" role="alert"></div><button class="btn green block" type="button" data-act="savetx">'+ic('check')+'Salvar lançamento</button></div>';
+}
+function fillCats(type){var s=document.getElementById('tx-cat');s.innerHTML=(type==='in'?INCATS:Object.keys(CATS)).map(function(c){return '<option>'+c+'</option>';}).join('');}
+
+/* ---------- Tela 3: Metas ---------- */
+function vMetas(){
+  var tot=S.goals.reduce(function(a,g){return a+g.saved;},0);
+  return head('Metas de economia','Guardado em todas as metas: <b class="num">'+brl(tot)+'</b>')+
+  S.goals.map(function(g){
+    var p=Math.min(100,Math.round(g.saved/g.target*100)),rest=Math.max(0,g.target-g.saved);
+    return '<section class="card goal"><div class="top"><div><h3>'+esc(g.name)+'</h3><span class="tag num">Objetivo: '+brl(g.target)+'</span></div>'+(p>=100?'<span class="done">Meta atingida</span>':'<span class="pct num" style="font-size:22px">'+p+'%</span>')+'</div>'+
+    '<div class="bar" role="progressbar" aria-valuenow="'+p+'" aria-valuemin="0" aria-valuemax="100" aria-label="Progresso de '+esc(g.name)+'"><i style="width:'+p+'%"></i></div>'+
+    '<div class="meta"><span class="num">Guardado: <b style="color:var(--ink)">'+brl(g.saved)+'</b></span><span class="num">Faltam: <b style="color:var(--ink)">'+brl(rest)+'</b></span></div>'+
+    '<div class="acts"><button class="btn green" data-dep="'+g.id+'">'+ic('plus')+'Guardar</button><button class="btn ghost" data-gdel="'+g.id+'" aria-label="Excluir meta">'+ic('trash')+'</button></div></section>';
+  }).join('')+
+  (S.goals.length?'':'<div class="empty card">Você ainda não tem metas. Crie a primeira.</div>')+
+  '<button class="btn block" data-act="newgoal">'+ic('plus')+'Criar nova meta</button>';
+}
+function goalSheet(){return '<h3>Nova meta<button class="icon-btn" data-act="close" aria-label="Fechar">'+ic('x')+'</button></h3><div id="goalform">'+
+  '<div class="field"><label for="g-name">Nome da meta</label><input id="g-name" maxlength="36" placeholder="Ex.: Notebook novo" autocomplete="off"></div>'+
+  '<div class="grid2"><div class="field"><label for="g-target">Valor desejado (R$)</label><input id="g-target" inputmode="decimal" placeholder="0,00" autocomplete="off"></div>'+
+  '<div class="field"><label for="g-saved">Já guardei (R$)</label><input id="g-saved" inputmode="decimal" placeholder="0,00" autocomplete="off"></div></div>'+
+  '<div class="err" id="g-err" role="alert"></div><button class="btn green block" type="button" data-act="savegoal">'+ic('check')+'Criar meta</button></div>';}
+function depSheet(g){return '<h3>Guardar em “'+esc(g.name)+'”<button class="icon-btn" data-act="close" aria-label="Fechar">'+ic('x')+'</button></h3><div id="depform" data-id="'+g.id+'" novalidate>'+
+  '<p class="meta" style="margin:-4px 0 12px">Faltam <b class="num" style="color:var(--ink)">'+brl(Math.max(0,g.target-g.saved))+'</b> para a meta.</p>'+
+  '<div class="field"><label for="d-val">Quanto você economizou? (R$)</label><input id="d-val" inputmode="decimal" placeholder="0,00" autocomplete="off"></div>'+
+  '<div class="err" id="d-err" role="alert"></div><button class="btn green block" type="button" data-act="savedep">'+ic('check')+'Registrar economia</button></div>';}
+
+/* ---------- Tela 4: Educação financeira ---------- */
+var LESSONS=[
+ {id:'basica',t:'Educação financeira básica',s:'Entender de onde o dinheiro vem e para onde vai.',m:'<p>Educação financeira é aprender a usar o dinheiro com consciência. O primeiro passo é saber quanto entra e quanto sai.</p><ul><li>Receita é tudo que você recebe.</li><li>Despesa é tudo que você paga.</li><li>Sobra positiva permite guardar e realizar planos.</li></ul>'},
+ {id:'despesas',t:'Organização de despesas',s:'Separar o que é necessário do que é desejo.',m:'<p>Dividir os gastos em categorias mostra onde o dinheiro está indo.</p><ul><li>Fixos: moradia, transporte, escola.</li><li>Variáveis: alimentação, lazer, compras.</li><li>Uma regra simples de partida é 50% necessidades, 30% desejos e 20% para guardar. Ajuste à sua realidade.</li></ul>'},
+ {id:'inflacao',t:'Inflação',s:'Por que o mesmo dinheiro compra menos com o tempo.',m:'<p>Inflação é o aumento geral dos preços. Se ela é de 5% ao ano, algo que custa R$ 100 hoje passa a custar cerca de R$ 105 daqui a um ano.</p><p>Por isso, dinheiro parado perde poder de compra. Comparar o rendimento com a inflação mostra o ganho real.</p>'},
+ {id:'rendafixa',t:'Renda fixa',s:'Investimentos com regras de remuneração conhecidas.',m:'<p>Na renda fixa, a forma de cálculo do retorno é definida no início. Exemplos comuns: poupança, títulos do Tesouro e CDB.</p><ul><li>Costuma ter menos oscilação que a renda variável.</li><li>O prazo e a liquidez mudam de um produto para outro.</li><li>Rendimento passado não garante rendimento futuro.</li></ul>'},
+ {id:'investimentos',t:'Investimentos',s:'Fazer o dinheiro trabalhar a seu favor.',m:'<p>Investir é aplicar dinheiro esperando um retorno ao longo do tempo. Todo investimento envolve risco e prazo.</p><ul><li>Defina o objetivo antes de escolher onde aplicar.</li><li>Quanto maior o retorno esperado, maior costuma ser o risco.</li><li>Primeiro monte uma reserva de emergência.</li></ul>'},
+ {id:'economizar',t:'Importância de economizar',s:'Pequenos valores guardados com frequência viram resultados.',m:'<p>Guardar R$ 5 por dia são cerca de R$ 150 por mês. O que pesa é a constância, não o tamanho do valor.</p><ul><li>Guarde assim que receber.</li><li>Automatize quando possível.</li><li>Dê um nome ao objetivo: fica mais fácil manter.</li></ul>'}
+];
+var openL=null;
+function vAprender(){
+  var d=S.days.reduce(function(a,b){return a+b;},0);
+  return head('Educação financeira','Aprenda em poucos minutos · '+S.read.length+' de '+LESSONS.length+' lidos')+
+  '<section class="card"><h3>Desafio da semana'+(d===7?'<span class="done">Concluído</span>':'')+'</h3><p style="margin:0 0 12px;color:var(--muted);font-size:14px">Guarde R$ 5 por dia durante 7 dias. Toque no dia em que cumprir.</p><div class="days">'+['S','T','Q','Q','S','S','D'].map(function(l,i){return '<button data-day="'+i+'" aria-pressed="'+(S.days[i]===1)+'" aria-label="Dia '+(i+1)+'">'+l+'</button>';}).join('')+'</div><div class="meta"><span>'+d+' de 7 dias</span><span class="num">'+brl(d*5)+' guardados no desafio</span></div></section>'+
+  LESSONS.map(function(L){var o=openL===L.id,r=S.read.indexOf(L.id)>-1;
+    return '<section class="card lesson'+(o?' open':'')+'"><button data-lesson="'+L.id+'" aria-expanded="'+o+'"><span class="ic">'+ic(r?'check':'book')+'</span><span style="min-width:0"><h3>'+L.t+(r?'<span class="done">Lido</span>':'')+'</h3><p>'+L.s+'</p></span><span class="chev">'+ic('chev')+'</span></button><div class="more">'+L.m+'<button class="btn '+(r?'ghost':'green')+'" style="margin-top:8px;padding:9px 14px" data-readmark="'+L.id+'">'+(r?'Marcar como não lido':'Marcar como lido')+'</button></div></section>';}).join('');
+}
+
+/* ---------- Tela 5: Simulador ---------- */
+var PRODS={parado:{n:'Dinheiro parado',r:0,c:'var(--c6)'},poupanca:{n:'Poupança',r:6.5,c:'var(--c3)'},tesouro:{n:'Tesouro Selic',r:10.5,c:'var(--c1)'},cdb:{n:'CDB',r:11.2,c:'var(--c2)'}};
+function series(r,s){var m=Math.pow(1+r/100,1/12)-1,b=s.ini,out=[b];for(var i=1;i<=s.meses;i++){b=b*(1+m)+s.aporte;out.push(b);}return out;}
+function vSimulador(){
+  var s=S.sim;
+  return head('Simulador','Aprenda como o dinheiro cresce com o tempo')+
+  '<div class="notice">'+ic('info')+'<div><b>Simulação educativa.</b> Os resultados são hipotéticos, usam taxas de exemplo e não garantem rendimento. Este aplicativo não movimenta dinheiro real.</div></div>'+
+  '<section class="card"><div class="grid2"><div class="field"><label for="s-ini">Valor inicial (R$)</label><input id="s-ini" inputmode="decimal" value="'+String(s.ini).replace('.',',')+'" autocomplete="off"></div>'+
+  '<div class="field"><label for="s-apo">Aporte mensal (R$)</label><input id="s-apo" inputmode="decimal" value="'+String(s.aporte).replace('.',',')+'" autocomplete="off"></div></div>'+
+  '<div class="field"><label for="s-mes">Período: <b id="s-mes-l" class="num" style="color:var(--ink)">'+s.meses+' meses</b></label><input id="s-mes" type="range" min="6" max="60" step="6" value="'+s.meses+'"></div>'+
+  '<div class="field" style="margin-bottom:0"><label>Tipo de investimento para simular</label><div class="opts" id="s-opts">'+['poupanca','tesouro','cdb'].map(function(k){return '<button data-prod="'+k+'" aria-pressed="'+(s.sel===k)+'"><i style="background:'+PRODS[k].c+'"></i>'+PRODS[k].n+'</button>';}).join('')+'</div></div></section>'+
+  '<section class="card" id="s-out"></section>';
+}
+function drawSim(){
+  var s=S.sim,P=PRODS,keys=['parado','poupanca','tesouro','cdb'],inf=0.045,yrs=s.meses/12,adj=s.inf?1/Math.pow(1+inf,yrs):1;
+  var ser={};keys.forEach(function(k){ser[k]=series(P[k].r,s);});
+  var invested=s.ini+s.aporte*s.meses,sel=ser[s.sel],fin=sel[sel.length-1]*adj,gain=fin-invested;
+  var W=340,H=190,pl=44,pr=8,pt=10,pb=22,mx=0;
+  keys.forEach(function(k){mx=Math.max(mx,ser[k][s.meses]*adj);});
+  var step=Math.pow(10,Math.floor(Math.log10(Math.max(mx,1))))/2;if(mx/step>8)step*=2;var top=Math.ceil(mx/step)*step||1;
+  function X(i){return pl+(W-pl-pr)*i/s.meses;}function Y(v){return pt+(H-pt-pb)*(1-v/top);}
+  var g='';for(var v=0;v<=top+0.001;v+=step){g+='<line class="grid" x1="'+pl+'" x2="'+(W-pr)+'" y1="'+Y(v)+'" y2="'+Y(v)+'"/><text x="'+(pl-6)+'" y="'+(Y(v)+3)+'" text-anchor="end">'+(v>=1000?(v/1000).toLocaleString('pt-BR',{maximumFractionDigits:1})+' mil':Math.round(v))+'</text>';}
+  [0,.5,1].forEach(function(f){var i=Math.round(s.meses*f);g+='<text x="'+X(i)+'" y="'+(H-6)+'" text-anchor="'+(f===0?'start':f===1?'end':'middle')+'">'+i+' m</text>';});
+  var lines=keys.map(function(k){var pts=ser[k].map(function(b,i){return X(i).toFixed(1)+','+Y(b*(k==='parado'?adj:adj)).toFixed(1);}).join(' ');var on=k===s.sel;return '<polyline points="'+pts+'" fill="none" stroke="'+P[k].c+'" stroke-width="'+(on?3:1.6)+'" stroke-opacity="'+(on?1:.65)+'" stroke-linejoin="round" stroke-linecap="round"'+(k==='parado'?' stroke-dasharray="4 3"':'')+'/>';}).join('');
+  var ex=X(s.meses),ey=Y(fin);
+  var html='<h3>Projeção de '+P[s.sel].n+'</h3><div class="stats" style="margin-bottom:14px"><div class="stat"><small>Total aplicado</small><b class="num">'+brl(invested)+'</b></div><div class="stat"><small>Valor estimado</small><b class="num" style="color:var(--green-ink)">'+brl(fin)+'</b></div><div class="stat"><small>'+(s.inf?'Ganho real estimado':'Ganho estimado')+'</small><b class="num">'+(gain>=0?'+':'−')+brl(Math.abs(gain))+'</b></div><div class="stat"><small>Taxa de exemplo</small><b class="num">'+P[s.sel].r.toLocaleString('pt-BR')+'% ao ano</b></div></div>'+
+  '<svg class="chart" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Gráfico comparando a evolução do dinheiro em cada opção">'+g+lines+'<circle cx="'+ex+'" cy="'+ey+'" r="4.5" fill="'+P[s.sel].c+'" stroke="var(--surface)" stroke-width="2"/></svg>'+
+  '<div class="legend" style="flex-direction:row;flex-wrap:wrap;gap:6px 14px;margin:10px 0 14px">'+keys.map(function(k){return '<div><i style="background:'+P[k].c+'"></i><span style="flex:none">'+P[k].n+'</span></div>';}).join('')+'</div>'+
+  '<label style="display:flex;gap:10px;align-items:center;font-size:14px;margin-bottom:14px"><input type="checkbox" id="s-inf" '+(s.inf?'checked':'')+' style="width:18px;height:18px;accent-color:var(--green)"> Descontar inflação de exemplo (4,5% ao ano)</label>'+
+  '<div class="scroll-x"><table class="tbl"><thead><tr><th>Opção</th><th>Valor final</th><th>Diferença</th></tr></thead><tbody>'+keys.map(function(k){var f=ser[k][s.meses]*adj;return '<tr'+(k===s.sel?' class="sel"':'')+'><td>'+P[k].n+'</td><td class="num">'+brl(f)+'</td><td class="num">'+(f-invested>=0?'+':'−')+brl(Math.abs(f-invested))+'</td></tr>';}).join('')+'</tbody></table></div>'+
+  '<p style="color:var(--muted);font-size:12.5px;margin:12px 0 0">Cálculo com juros compostos mensais e aporte ao fim de cada mês. Sem impostos e taxas. Valores hipotéticos, apenas para aprender.</p>';
+  document.getElementById('s-out').innerHTML=html;
+}
+
+/* ---------- feedback, folhas e menu ---------- */
+var tt;
+function toast(msg){var o=document.getElementById('overlay'),old=o.querySelector('.toast');if(old)old.remove();var d=document.createElement('div');d.className='toast';d.setAttribute('role','status');d.innerHTML=ic('check')+'<span>'+esc(msg)+'</span>';o.appendChild(d);clearTimeout(tt);tt=setTimeout(function(){d.remove();},2600);}
+function sheet(html){var o=document.getElementById('overlay'),old=o.querySelector('.sheet-wrap');if(old)old.remove();var d=document.createElement('div');d.className='sheet-wrap';d.innerHTML='<div class="scrim" data-act="close"></div><div class="sheet" role="dialog" aria-modal="true">'+html+'</div>';o.appendChild(d);var f=d.querySelector('input,button.btn');if(f&&f.tagName==='INPUT'&&!('ontouchstart' in window))f.focus();}
+function closeSheet(){var d=document.querySelector('.sheet-wrap');if(d)d.remove();}
+function menuSheet(){sheet('<h3>Menu<button class="icon-btn" data-act="close" aria-label="Fechar">'+ic('x')+'</button></h3>'+
+ '<p style="margin:-6px 0 8px;color:var(--muted);font-size:14px">InvesteFácil é um protótipo educativo. Os dados são fictícios e ficam apenas neste navegador.</p>'+
+ '<button class="menu-item" data-act="theme">'+ic('moon')+'Alternar tema claro e escuro</button>'+
+ '<button class="menu-item" data-act="reset">'+ic('reset')+'Reiniciar dados de demonstração</button>');}
+
+/* ---------- eventos ---------- */
+document.addEventListener('click',function(e){
+  var el=e.target.closest('[data-go],[data-act],[data-filt],[data-del],[data-dep],[data-gdel],[data-lesson],[data-readmark],[data-day],[data-prod],[data-t]');if(!el)return;
+  var d=el.dataset;
+  if(d.go){closeSheet();go(d.go);return;}
+  if(d.t){document.querySelectorAll('#txtype button').forEach(function(b){b.setAttribute('aria-pressed',String(b===el));});fillCats(d.t);return;}
+  if(d.act==='savetx'){saveTx();return;}
+  if(d.act==='savegoal'){saveGoal();return;}
+  if(d.act==='savedep'){saveDep();return;}
+  if(d.act==='close'){closeSheet();return;}
+  if(d.act==='newtx'){sheet(txSheet());fillCats('out');return;}
+  if(d.act==='newgoal'){sheet(goalSheet());return;}
+  if(d.act==='menu'){menuSheet();return;}
+  if(d.act==='theme'){var dark=document.documentElement.getAttribute('data-theme')==='dark'||(!document.documentElement.getAttribute('data-theme')&&matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.setAttribute('data-theme',dark?'light':'dark');closeSheet();render();return;}
+  if(d.act==='reset'){S=seed();save();closeSheet();filt='all';openL=null;render();toast('Dados de demonstração restaurados');return;}
+  if(d.filt){filt=d.filt;render();return;}
+  if(d.del){S.tx=S.tx.filter(function(t){return t.id!==+d.del;});save();render();toast('Lançamento excluído');return;}
+  if(d.dep){var g=S.goals.filter(function(x){return x.id===+d.dep;})[0];if(g)sheet(depSheet(g));return;}
+  if(d.gdel){S.goals=S.goals.filter(function(x){return x.id!==+d.gdel;});save();render();toast('Meta excluída');return;}
+  if(d.lesson){openL=openL===d.lesson?null:d.lesson;render();return;}
+  if(d.readmark){var i=S.read.indexOf(d.readmark);if(i>-1)S.read.splice(i,1);else{S.read.push(d.readmark);toast('Conteúdo concluído');}save();render();return;}
+  if(d.day!==undefined){S.days[+d.day]=S.days[+d.day]?0:1;save();render();if(S.days.every(Boolean))toast('Desafio concluído! Parabéns');return;}
+  if(d.prod){S.sim.sel=d.prod;save();document.querySelectorAll('#s-opts button').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.prod===d.prod));});drawSim();return;}
+});
+function saveTx(){
+  var type=document.querySelector('#txtype [aria-pressed="true"]').dataset.t,desc=document.getElementById('tx-desc').value.trim(),val=parseMoney(document.getElementById('tx-val').value),cat=document.getElementById('tx-cat').value,er=document.getElementById('tx-err');
+  if(!desc){er.textContent='Escreva uma descrição para o lançamento.';return;}
+  if(!(val>0)){er.textContent='Informe um valor maior que zero. Exemplo: 25,90';return;}
+  S.tx.push({id:S.nid++,type:type,desc:desc,val:Math.round(val*100)/100,cat:cat,date:'2026-11-03'});save();closeSheet();render();toast((type==='in'?'Receita':'Despesa')+' de '+brl(val)+' adicionada');
+}
+function saveGoal(){
+  var n=document.getElementById('g-name').value.trim(),t=parseMoney(document.getElementById('g-target').value),raw=document.getElementById('g-saved').value.trim(),sv=raw?parseMoney(raw):0,ge=document.getElementById('g-err');
+  if(!n){ge.textContent='Dê um nome para a meta.';return;}
+  if(!(t>0)){ge.textContent='Informe o valor desejado, maior que zero. Exemplo: 3000';return;}
+  if(!(sv>=0)){ge.textContent='O valor já guardado precisa ser um número válido.';return;}
+  S.goals.push({id:S.nid++,name:n,target:t,saved:sv});save();closeSheet();go('metas');toast('Meta criada');
+}
+function saveDep(){
+  var f=document.getElementById('depform'),v=parseMoney(document.getElementById('d-val').value),de=document.getElementById('d-err'),g2=S.goals.filter(function(x){return x.id===+f.dataset.id;})[0];
+  if(!g2){closeSheet();return;}
+  if(!(v>0)){de.textContent='Informe quanto você economizou, maior que zero. Exemplo: 200';return;}
+  g2.saved=Math.round((g2.saved+v)*100)/100;save();closeSheet();render();toast(brl(v)+' guardados em '+g2.name);
+}
+document.addEventListener('keydown',function(e){
+  if(e.key==='Enter'&&e.target.tagName==='INPUT'&&e.target.closest('.sheet')){e.preventDefault();var b=e.target.closest('.sheet').querySelector('[data-act^="save"]');if(b)b.click();}
+});
+document.addEventListener('input',function(e){
+  var t=e.target;
+  if(t.id==='s-ini'||t.id==='s-apo'){var v=parseMoney(t.value);if(v>=0){S.sim[t.id==='s-ini'?'ini':'aporte']=v;save();drawSim();}}
+  if(t.id==='s-mes'){S.sim.meses=+t.value;document.getElementById('s-mes-l').textContent=t.value+' meses';save();drawSim();}
+});
+document.addEventListener('change',function(e){if(e.target.id==='s-inf'){S.sim.inf=e.target.checked;save();drawSim();}});
+window.addEventListener('hashchange',function(){var h=location.hash.slice(1);if(h&&h!==cur)go(h,false);});
+
+/* ---------- início ---------- */
+document.getElementById('side-logo').innerHTML=logo(56)+'<div style="font-size:26px">InvesteFácil<small style="font-size:13px">Tecnologia e educação financeira</small></div>';
+document.getElementById('pillars').innerHTML=[['wallet','Registrar','Receitas e despesas por categoria','controle'],['target','Metas','Objetivos com barra de progresso','metas'],['book','Aprender','Conteúdos curtos e desafios','aprender'],['chart','Simular','Projeções sem dinheiro real','simulador']].map(function(p){return '<button class="pillar" data-go="'+p[3]+'">'+ic(p[0])+'<span><b>'+p[1]+'</b><span>'+p[2]+'</span></span></button>';}).join('');
+var h0=location.hash.slice(1);go(h0||'painel',false);
+})();
+</script>
+
+</html>
